@@ -19,6 +19,7 @@ public interface UrunConverter {
     Urun convertUrunDtoToUrun(UrunDto urunDto);
 
     @Mapping(target = "kategoriId", source = "kategori.id")
+    @Mapping(source = "fiyat", target = "fiyat", numberFormat = "$#.##")
     UrunDto convertUrunToUrunDto(Urun urun);
 
     @Mapping(source = "fiyat", target = "urunFiyati")

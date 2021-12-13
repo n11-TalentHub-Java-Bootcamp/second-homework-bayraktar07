@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- *  KULLANICI ENTITY ODEV MADDE - 1
+ *  KULLANICI ENTITY HW STEP - 1
  * */
 
 
@@ -24,7 +24,7 @@ public class Kullanici implements Serializable {
         this.kullaniciAdi = kullaniciAdi;
     }
 
-    @SequenceGenerator(name = "generator", sequenceName = "KULLANICI_ID_SEQ")
+    @SequenceGenerator(name = "generator", sequenceName = "KULLANICI_ID_SEQ", allocationSize = 1)
     @Id
     @GeneratedValue(generator = "generator")
     @Column(name = "ID", nullable = false)

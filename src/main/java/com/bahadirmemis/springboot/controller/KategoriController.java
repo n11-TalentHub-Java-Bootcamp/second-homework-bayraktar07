@@ -37,9 +37,7 @@ public class KategoriController {
     @GetMapping("/{id}")
     public Kategori findById(@PathVariable Long id){
 
-        Kategori kategori = kategoriEntityService.findById(id);
-
-        return kategori;
+        return kategoriEntityService.findById(id);
     }
 
     @PostMapping("")
@@ -68,16 +66,14 @@ public class KategoriController {
 
         Kategori kategori = KategoriConverter.INSTANCE.convertKategoriDtoToKategori(kategoriDto);
 
-        //TODO: Check it
-        if (kategori.getUstKategori() != null && kategori.getUstKategori().getId() == null){
-            kategori.setUstKategori(null);
-        }
+//
+//        if (kategori.getUstKategori() != null && kategori.getUstKategori().getId() == null){
+//            kategori.setUstKategori(null);
+//        }
 
         kategori = kategoriEntityService.save(kategori);
 
-        KategoriDto kategoriDtoResult = KategoriConverter.INSTANCE.convertKategoriToKategoriDto(kategori);
-
-        return kategoriDtoResult;
+        return KategoriConverter.INSTANCE.convertKategoriToKategoriDto(kategori);
     }
 
     @DeleteMapping("/{id}")

@@ -5,7 +5,7 @@ import java.util.Date;
 
 
 /**
- *  URUN_YORUM ENTITY ODEV MADDE - 1
+ *  URUN_YORUM ENTITY HW STEP - 1
  * */
 
 @Entity

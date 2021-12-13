@@ -10,6 +10,7 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
+/** Kullanici - KullaniciDto Mapper **/
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface KullaniciConverter {
 
@@ -18,5 +19,6 @@ public interface KullaniciConverter {
     @Mapping(target = "id", source = "id")
     List<KullaniciDto> convertAllKullaniciListToKullaniciDtoList (List<Kullanici>  kullanici);
     KullaniciDto convertKullaniciToKullaniciDto(Kullanici kullanici);
+    Kullanici convertKullaniciDtoToKullanici ( KullaniciDto kullaniciDto);
 
 }
