@@ -23,7 +23,7 @@ public class KullaniciController {
 
     /** GET ALL USERS LIST STEP - 2.1 **/
     @GetMapping("")
-    public List<KullaniciDto> findAll () {
+    public List<KullaniciDto> findAllKullanici () {
         return KullaniciConverter.INSTANCE.convertAllKullaniciListToKullaniciDtoList(kullaniciEntityService.findAll());
     }
 
@@ -41,7 +41,7 @@ public class KullaniciController {
 
     /** SAVE NEW USER STEP - 2.4 **/
     @PostMapping()
-    public ResponseEntity<Object> save (@RequestBody KullaniciDto kullaniciDto) {
+    public ResponseEntity<Object> saveKullanici (@RequestBody KullaniciDto kullaniciDto) {
 
         Kullanici kullanici = KullaniciConverter.INSTANCE.convertKullaniciDtoToKullanici(kullaniciDto);
 
@@ -68,7 +68,7 @@ public class KullaniciController {
 
     /** MODIFY USER INFO STEP - 2.6 **/
     @PutMapping("")
-    public ResponseEntity<Object> update (@RequestBody KullaniciDto kullaniciDto) {
+    public ResponseEntity<Object> updateKullanici (@RequestBody KullaniciDto kullaniciDto) {
         Kullanici kullanici = KullaniciConverter.INSTANCE.convertKullaniciDtoToKullanici(kullaniciDto);
         kullaniciEntityService.save(kullanici);
         return ResponseEntity.ok(kullanici.getId() + " id'li kullanıcı güncellendi.");

@@ -1,5 +1,8 @@
 package com.bahadirmemis.springboot.entity;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -10,6 +13,8 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "KULLANICI")
+@JsonFilter("KullaniciFilter")
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Kullanici implements Serializable {
 
     public Kullanici() {

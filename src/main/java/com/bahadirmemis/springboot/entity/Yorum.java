@@ -1,6 +1,9 @@
 package com.bahadirmemis.springboot.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 
@@ -10,7 +13,8 @@ import java.util.Date;
 
 @Entity
 @Table (name = "Urun_Yorum")
-public class Yorum {
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
+public class Yorum implements Serializable {
 
     @SequenceGenerator(name = "generator", sequenceName = "YORUM_ID_SEQ")
     @Id
@@ -30,11 +34,47 @@ public class Yorum {
     @JoinColumn(name = "URUN_ID", foreignKey = @ForeignKey(name = "FK_URUN_YORUM_ID"))
     private Urun urun;
 
-
-
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "KULLANICI_ID", foreignKey = @ForeignKey(name = "FK_KULLANICI_YORUM_ID"))
     Kullanici kullanici;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getYorum() {
+        return yorum;
+    }
+
+    public void setYorum(String yorum) {
+        this.yorum = yorum;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Urun getUrun() {
+        return urun;
+    }
+
+    public void setUrun(Urun urun) {
+        this.urun = urun;
+    }
+
+    public Kullanici getKullanici() {
+        return kullanici;
+    }
+
+    public void setKullanici(Kullanici kullanici) {
+        this.kullanici = kullanici;
+    }
 }
