@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
 import java.util.List;
 
@@ -34,15 +33,10 @@ public class UrunController {
     public MappingJacksonValue findAllUrunList() {
 
         List<Urun> urunList = urunEntityService.findAll();
-
         String filterName = "UrunFilter";
-
         SimpleFilterProvider filters = getUrunFilterProvider(filterName);
-
         MappingJacksonValue mapping = new MappingJacksonValue(urunList);
-
         mapping.setFilters(filters);
-
         return mapping;
     }
 
@@ -50,7 +44,6 @@ public class UrunController {
     public MappingJacksonValue findUrunById(@PathVariable Long id){
 
         Urun urun = urunEntityService.findById(id);
-
         if (urun == null){
             throw new UrunNotFoundException("Urun not found. id: " + id);
         }
@@ -61,19 +54,12 @@ public class UrunController {
         );
 
         UrunDto urunDto = UrunConverter.INSTANCE.convertUrunToUrunDto(urun);
-
         String filterName = "UrunDtoFilter";
-
         SimpleFilterProvider filters = getUrunFilterProvider(filterName);
-
-        EntityModel entityModel = EntityModel.of(urunDto);
-
+        EntityModel<UrunDto> entityModel = EntityModel.of(urunDto);
         entityModel.add(linkToUrun.withRel("tum-urunler"));
-
         MappingJacksonValue mapping = new MappingJacksonValue(entityModel);
-
         mapping.setFilters(filters);
-
         return mapping;
     }
 
@@ -81,51 +67,39 @@ public class UrunController {
     public UrunDetayDto findUrunDtoById(@PathVariable Long id){
 
         Urun urun = urunEntityService.findById(id);
-
         if (urun == null){
             throw new UrunNotFoundException("Urun not found. id: " + id);
         }
 
-        UrunDetayDto urunDetayDto = UrunConverter.INSTANCE.convertUrunToUrunDetayDto(urun);
-
-        return urunDetayDto;
+        return UrunConverter.INSTANCE.convertUrunToUrunDetayDto(urun);
     }
 
     @PostMapping("")
     public ResponseEntity<Object> saveUrun(@RequestBody UrunDto urunDto){
 
         Urun urun = UrunConverter.INSTANCE.convertUrunDtoToUrun(urunDto);
-
         urun = urunEntityService.save(urun);
-
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("{id}")
                 .buildAndExpand(urun.getId())
                 .toUri();
-
         return ResponseEntity.created(uri).build();
     }
 
     @DeleteMapping("{id}")
     public void deleteUrun(@PathVariable Long id){
-
         urunEntityService.deleteById(id);
     }
 
     @GetMapping("kategoriler/{kategoriId}")
     public List<UrunDetayDto> findAllUrunByKategoriId(@PathVariable Long kategoriId){
-
         List<Urun> urunList = urunEntityService.findAllByKategoriOrderByIdDesc(kategoriId);
-
-        List<UrunDetayDto> urunDetayDtoList = UrunConverter.INSTANCE.convertAllUrunListToUrunDetayDtoList(urunList);
-
-        return urunDetayDtoList;
+        return UrunConverter.INSTANCE.convertAllUrunListToUrunDetayDtoList(urunList);
     }
 
     private SimpleFilterProvider getUrunFilterProvider(String filterName) {
         SimpleBeanPropertyFilter filter = getUrunFilter();
-
         return new SimpleFilterProvider().addFilter(filterName, filter);
     }
 

@@ -1,7 +1,8 @@
 package com.bahadirmemis.springboot.service.entityservice;
 
+import com.bahadirmemis.springboot.converter.YorumConverter;
 import com.bahadirmemis.springboot.dao.YorumDao;
-import com.bahadirmemis.springboot.entity.Yorum;
+import com.bahadirmemis.springboot.dto.YorumDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,20 +14,19 @@ public class YorumEntityService {
     @Autowired
     YorumDao yorumDao;
 
-
-    public List<Yorum> findAllYorumByKullaniciId(Long id) {
-        return yorumDao.findAllYorumByKullaniciId(id);
+    public List<YorumDto> findAllYorumByKullaniciId(Long id) {
+        return YorumConverter.INSTANCE.convertYorumListToYorumDtoList(yorumDao.findAllYorumByKullaniciId(id));
     }
 
-    public List<Yorum> findAllYorumByUrunId(Long id) {
-        return yorumDao.findAllYorumByUrunId(id);
+    public List<YorumDto> findAllYorumByUrunId(Long id) {
+        return YorumConverter.INSTANCE.convertYorumListToYorumDtoList(yorumDao.findAllYorumByUrunId(id));
     }
 
     public void deleteYorumById(Long id) {
         yorumDao.deleteById(id);
     }
 
-    public Yorum save(Yorum yorum) {
-        return yorumDao.save(yorum);
+    public void save(YorumDto yorumDto) {
+        yorumDao.save(YorumConverter.INSTANCE.convertYorumDtoToYorum(yorumDto));
     }
 }

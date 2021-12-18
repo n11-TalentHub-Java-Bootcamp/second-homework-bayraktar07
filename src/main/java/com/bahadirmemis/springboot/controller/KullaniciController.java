@@ -1,8 +1,6 @@
 package com.bahadirmemis.springboot.controller;
 
-import com.bahadirmemis.springboot.converter.KullaniciConverter;
 import com.bahadirmemis.springboot.dto.KullaniciDto;
-import com.bahadirmemis.springboot.entity.Kullanici;
 import com.bahadirmemis.springboot.exception.KullaniciNotFoundException;
 import com.bahadirmemis.springboot.service.entityservice.KullaniciEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +22,18 @@ public class KullaniciController {
     /** GET ALL USERS LIST STEP - 2.1 **/
     @GetMapping("")
     public List<KullaniciDto> findAllKullanici () {
-        return KullaniciConverter.INSTANCE.convertAllKullaniciListToKullaniciDtoList(kullaniciEntityService.findAll());
+        return kullaniciEntityService.findAll();
     }
 
     /** GET USER BY USERNAME STEP - 2.2 **/
-    @GetMapping("/{kullaniciAdi}")
-    public KullaniciDto findKullaniciByKullaniciAdi (@PathVariable String kullaniciAdi) {
+    @GetMapping("/kullaniciAdi")
+    public KullaniciDto findKullaniciByKullaniciAdi (@RequestParam String kullaniciAdi) {
         return kullaniciEntityService.findKullaniciByKullaniciAdi(kullaniciAdi);
     }
 
     /** GET USER BY PHONE NUMBER STEP - 2.3 **/
-    @GetMapping("/KullaniciTelefonlar/{telefon}")
-    public KullaniciDto findKullaniciByTelefon (@PathVariable String telefon) {
+    @GetMapping("/KullaniciTelefon")
+    public KullaniciDto findKullaniciByTelefon (@RequestParam String telefon) {
         return kullaniciEntityService.findKullaniciByTelefon(telefon);
     }
 
@@ -43,34 +41,30 @@ public class KullaniciController {
     @PostMapping()
     public ResponseEntity<Object> saveKullanici (@RequestBody KullaniciDto kullaniciDto) {
 
-        Kullanici kullanici = KullaniciConverter.INSTANCE.convertKullaniciDtoToKullanici(kullaniciDto);
-
-        kullanici = kullaniciEntityService.save(kullanici);
-
+        kullaniciEntityService.saveKullanici(kullaniciDto);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(kullanici.getId())
+                .buildAndExpand(kullaniciDto.getId())
                 .toUri();
-
         return ResponseEntity.created(uri).build();
     }
 
     /** DELETE USER STEP - 2.5 **/
     @DeleteMapping("")
     public ResponseEntity<Object> deleteKullaniciByKullaniciAdiAndTelefon (@RequestParam(value = "kullaniciAdi") String kullaniciAdi,@RequestParam(value = "telefon") String telefon) {
-        List<Kullanici> kullaniciList = kullaniciEntityService.deleteKullaniciByKullaniciAdiAndTelefon(kullaniciAdi,telefon);
+        List<KullaniciDto> kullaniciList = kullaniciEntityService.deleteKullaniciByKullaniciAdiAndTelefon(kullaniciAdi,telefon);
         if(kullaniciList.isEmpty()) {
             throw new KullaniciNotFoundException(kullaniciAdi + " kullanıcı adı ile " + telefon + " telefonu bilgileri uyuşmamaktadır.");
         }
+
         return ResponseEntity.ok("Kullanıcı adı: " + kullaniciAdi + ", telefon: " + telefon + " olan " + kullaniciList.size() + " kayıt silindi.");
     }
 
     /** MODIFY USER INFO STEP - 2.6 **/
     @PutMapping("")
     public ResponseEntity<Object> updateKullanici (@RequestBody KullaniciDto kullaniciDto) {
-        Kullanici kullanici = KullaniciConverter.INSTANCE.convertKullaniciDtoToKullanici(kullaniciDto);
-        kullaniciEntityService.save(kullanici);
-        return ResponseEntity.ok(kullanici.getId() + " id'li kullanıcı güncellendi.");
+        kullaniciEntityService.saveKullanici(kullaniciDto);
+        return ResponseEntity.ok(kullaniciDto.getId() + " id'li kullanıcı güncellendi.");
     }
 }

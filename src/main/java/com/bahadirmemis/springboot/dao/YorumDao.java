@@ -11,7 +11,6 @@ import java.util.List;
 @Repository
 public interface YorumDao extends JpaRepository<Yorum, Long> {
 
-
     List<Yorum>  findAllYorumByKullaniciId (@Param(value = "id") Long id);
 
     List<Yorum> findAllYorumByUrunId(@Param(value = "id") Long id);

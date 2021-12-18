@@ -30,7 +30,7 @@ public class Kategori  implements Serializable {
     private Long kirilim;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_UST_KATEGORI")
+    @JoinColumn(name = "ID_UST_KATEGORI", foreignKey = @ForeignKey( name = "FK_UST_KATEGORI"))
     private Kategori ustKategori;
 
     public Long getId() {

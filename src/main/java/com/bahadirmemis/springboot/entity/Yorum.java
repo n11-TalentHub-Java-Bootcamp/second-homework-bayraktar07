@@ -1,16 +1,16 @@
 package com.bahadirmemis.springboot.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-
 /**
  *  URUN_YORUM ENTITY HW STEP - 1
  * */
-
 @Entity
 @Table (name = "Urun_Yorum")
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
@@ -29,13 +29,13 @@ public class Yorum implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "URUN_ID", foreignKey = @ForeignKey(name = "FK_URUN_YORUM_ID"))
     private Urun urun;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "KULLANICI_ID", foreignKey = @ForeignKey(name = "FK_KULLANICI_YORUM_ID"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
     Kullanici kullanici;
 
     public Long getId() {

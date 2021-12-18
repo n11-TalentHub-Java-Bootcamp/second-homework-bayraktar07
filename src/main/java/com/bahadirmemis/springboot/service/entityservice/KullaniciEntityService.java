@@ -17,11 +17,9 @@ public class KullaniciEntityService {
     private KullaniciDao kullaniciDao;
 
     /** Step 2.1 **/
-    public List<Kullanici> findAll () {
-       return kullaniciDao.findAll();
+    public List<KullaniciDto> findAll () {
+       return KullaniciConverter.INSTANCE.convertAllKullaniciListToKullaniciDtoList(kullaniciDao.findAll());
     }
-
-
 
     /** Step 2.2 **/
     public KullaniciDto findKullaniciByKullaniciAdi (String username) {
@@ -44,12 +42,12 @@ public class KullaniciEntityService {
     }
 
     /** Step 2.4 **/
-    public Kullanici save (Kullanici kullanici) {
-        return kullaniciDao.save(kullanici);
+    public void saveKullanici (KullaniciDto kullaniciDto) {
+        kullaniciDao.save(KullaniciConverter.INSTANCE.convertKullaniciDtoToKullanici(kullaniciDto));
     }
 
     /** Step 2.5 **/
-    public List<Kullanici> deleteKullaniciByKullaniciAdiAndTelefon (String kullaniciAdi, String telefon) {
-        return kullaniciDao.deleteKullaniciByKullaniciAdiAndTelefon(kullaniciAdi,telefon);
+    public List<KullaniciDto> deleteKullaniciByKullaniciAdiAndTelefon (String kullaniciAdi, String telefon) {
+        return KullaniciConverter.INSTANCE.convertAllKullaniciListToKullaniciDtoList(kullaniciDao.deleteKullaniciByKullaniciAdiAndTelefon(kullaniciAdi,telefon));
     }
 }

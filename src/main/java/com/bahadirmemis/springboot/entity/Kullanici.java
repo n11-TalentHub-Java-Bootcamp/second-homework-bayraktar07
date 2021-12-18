@@ -9,8 +9,6 @@ import java.io.Serializable;
 /**
  *  KULLANICI ENTITY HW STEP - 1
  * */
-
-
 @Entity
 @Table(name = "KULLANICI")
 @JsonFilter("KullaniciFilter")

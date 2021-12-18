@@ -28,51 +28,35 @@ public class KategoriController {
 
     @GetMapping("")
     public List<KategoriDto> findAll(){
-
         List<Kategori> kategoriList = kategoriEntityService.findAll();
-
         return KategoriConverter.INSTANCE.convertAllKategoriListToKategoriDtoList(kategoriList);
     }
 
     @GetMapping("/{id}")
     public Kategori findById(@PathVariable Long id){
-
         return kategoriEntityService.findById(id);
     }
 
     @PostMapping("")
     public ResponseEntity<Object> save(@RequestBody KategoriDto kategoriDto){
-
         Kategori kategori = KategoriConverter.INSTANCE.convertKategoriDtoToKategori(kategoriDto);
-
-        //TODO: Check it
         if (kategori.getUstKategori() != null && kategori.getUstKategori().getId() == null){
             kategori.setUstKategori(null);
         }
 
         kategori = kategoriEntityService.save(kategori);
-
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(kategori.getId())
                 .toUri();
-
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("")
     public KategoriDto update(@RequestBody KategoriDto kategoriDto){
-
         Kategori kategori = KategoriConverter.INSTANCE.convertKategoriDtoToKategori(kategoriDto);
-
-//
-//        if (kategori.getUstKategori() != null && kategori.getUstKategori().getId() == null){
-//            kategori.setUstKategori(null);
-//        }
-
         kategori = kategoriEntityService.save(kategori);
-
         return KategoriConverter.INSTANCE.convertKategoriToKategoriDto(kategori);
     }
 
@@ -84,7 +68,6 @@ public class KategoriController {
     @GetMapping("/{id}/urunler")
     public List<UrunDetayDto> findAllUrunByKategoriId(@PathVariable Long id){
         List<Urun> urunList = urunEntityService.findAllByKategoriOrderByIdDesc(id);
-
         return UrunConverter.INSTANCE.convertAllUrunListToUrunDetayDtoList(urunList);
     }
 }
